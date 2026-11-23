@@ -147,6 +147,23 @@ Selected rank: **k = 3**. Module-level Cox models are adjusted for the clinical 
 
 The modules are strongly subtype-associated (Kruskal–Wallis q values below 1e-60) but none is independently prognostic after clinical adjustment (all BH q > 0.25). That is a useful negative result: the expression structure is real, but it is largely collinear with the subtype/clinical axis rather than a new independent risk factor.
 
+## Methods check: operating characteristics
+
+This is a simulation, not a breast cancer result. At shift 0 the rejection rate estimates Type I error; positive shifts estimate power. The simulation uses Fisher combination for speed; the cohort-level primary is permutation-calibrated Liptak.
+
+| Scenario | NPC (Fisher) rejection | Marginal BH | Bonferroni |
+|---|---:|---:|---:|
+| null | 4.0% | 3.3% | 3.3% |
+| 0.35 | 64.0% | 52.0% | 48.7% |
+| 0.55 | 96.0% | 92.0% | 90.0% |
+
+| Method | Mean discoveries | Mean FDP | Power |
+|---|---:|---:|---:|
+| NPC (Fisher) | 13.9 | 0.108 | 76.7% |
+| marginal BH | 6.2 | 0.046 | 36.7% |
+
+The null rejection rate for NPC is 4.0%, close to the nominal 5%; power rises to 64% at shift 0.35 and 96% at 0.55. The asymptotic Fisher variant is anti-conservative under dependent endpoints (mean FDP 0.108), which is exactly why the cohort analysis calibrates Liptak against joint permutations instead of relying on asymptotic combination. The marginal BH arm tests one endpoint at a time and is not directly comparable to the multi-endpoint NPC. This is a methods check, not a second cohort p-value.
+
 ## Quickstart
 
 ```bash
@@ -165,6 +182,9 @@ make pipeline
 # Serve the API + dashboard
 make api
 # http://127.0.0.1:8000
+
+# Optional: rerun the methods simulation
+make simulate
 ```
 
 If the raw data are already present, `make analysis` and `make site` are enough. The pipeline is deterministic under seed `20261123`.

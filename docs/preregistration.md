@@ -189,7 +189,7 @@ A simulation study evaluates the operating characteristics of the framework:
 - correlated multivariate outcomes with non-Gaussian errors;
 - exponential censoring with 20–50% censoring;
 - null and alternative effect sizes;
-- compare marginal BH, Bonferroni, and NPC Fisher/Liptak;
+- compare marginal BH, Bonferroni, and NPC Fisher; the cohort-level primary combiner is Liptak;
 - report type I error, power, and FDR at nominal 0.05.
 
 The simulation is a methods check, not a substitute for the cohort analysis. Its code and seed are released.

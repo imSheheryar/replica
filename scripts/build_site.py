@@ -270,7 +270,7 @@ def sensitivity_table(rows: list[dict]) -> str:
 def simulation_figure(summary: pd.DataFrame):
     fig = go.Figure()
     series = [
-        ("npc_type1_or_power", "NPC (Liptak)", TEAL),
+        ("npc_type1_or_power", "NPC (Fisher)", TEAL),
         ("marginal_bh_rate", "Marginal BH", "#8a9a5b"),
         ("bonferroni_rate", "Bonferroni", CORAL),
     ]
@@ -297,8 +297,9 @@ def simulation_figure(summary: pd.DataFrame):
 def simulation_table(fdr: pd.DataFrame) -> str:
     rows = []
     for _, r in fdr.iterrows():
+        method = "NPC (Fisher)" if r["method"] == "NPC_Fisher" else r["method"].replace("_", " ")
         rows.append(
-            f"<tr><td><strong>{r['method']}</strong></td><td>{r['mean_discoveries']:.1f}</td>"
+            f"<tr><td><strong>{method}</strong></td><td>{r['mean_discoveries']:.1f}</td>"
             f"<td>{r['mean_fdp']:.3f}</td><td>{r['mean_power']:.1%}</td></tr>"
         )
     return "".join(rows)
@@ -376,12 +377,12 @@ def build() -> Path:
     if sim_summary is not None and fdr_summary is not None:
         simulation_section = f"""
   <section>
-    <div class="section-head"><span class="section-no">10</span><h2>Methods check: operating characteristics</h2><p class="section-note">A simulation, not a breast cancer result. At shift 0 the rejection rate estimates Type I error; positive shifts estimate power. The FDR check compares marginal BH with Fisher NPC under dependent features.</p></div>
+    <div class="section-head"><span class="section-no">10</span><h2>Methods check: operating characteristics</h2><p class="section-note">A simulation, not a breast cancer result. At shift 0 the rejection rate estimates Type I error; positive shifts estimate power. The simulation uses Fisher combination for speed; the cohort-level primary is permutation-calibrated Liptak.</p></div>
     <div class="grid-2">
       <div class="figure">{figs['simulation']}</div>
       <div class="panel"><h3>FDR under dependent features</h3>
         <div class="table-wrap"><table><thead><tr><th>Method</th><th>Discoveries</th><th>Mean FDP</th><th>Power</th></tr></thead><tbody>{simulation_table(fdr_summary)}</tbody></table></div>
-        <p class="small">The FDR simulation uses an asymptotic Fisher combination for speed; the cohort-level NPC uses permutation calibration. The check is designed to show operating behaviour, not to produce a second cohort p-value.</p>
+        <p class="small">The asymptotic Fisher variant is anti-conservative under dependent endpoints (mean FDP 0.108), which is exactly why the cohort analysis calibrates Liptak against joint permutations instead of using asymptotic combination. The marginal BH arm tests one endpoint at a time and is not directly comparable to the multi-endpoint NPC. This is a methods check, not a second cohort p-value.</p>
       </div>
     </div>
   </section>
@@ -398,10 +399,12 @@ def build() -> Path:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Replica — Which breast cancer subtypes survive external validation?</title>
 <meta name="description" content="A replication audit of breast cancer subtype systems across TCGA-BRCA and METABRIC, with censoring-aware NPC, FDR control, and external validation.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<script src="assets/plotly.min.js"></script>
 </head>
 <body>
 <header class="hero">
@@ -505,8 +508,6 @@ def build() -> Path:
 </main>
 
 <footer><div class="wrap footer-grid"><div><span class="mark">Replica</span><p class="small">Built by <a href="https://github.com/imSheheryar">imSheheryar</a>. Code MIT; data governed by the source cohorts.</p></div><div class="footer-links"><a href="https://github.com/imSheheryar/replica">GitHub</a><a href="https://github.com/imSheheryar/replica/blob/main/docs/methods.md">Methods</a><a href="https://www.cbioportal.org">cBioPortal</a></div></div></footer>
-<script src="assets/plotly.min.js"></script>
-{''.join(figs.values())}
 </body>
 </html>"""
     (SITE / "index.html").write_text(html)

@@ -1,7 +1,7 @@
 PY ?= .venv/bin/python
 PIP ?= .venv/bin/pip
 
-.PHONY: setup data clinical expression cohorts analysis site validate api test lint docker clean
+.PHONY: setup data clinical expression cohorts analysis simulate readme site validate api test lint docker clean
 
 setup:
 	python3 -m venv .venv
@@ -21,6 +21,12 @@ cohorts:
 
 analysis: cohorts
 	PYTHONPATH=src $(PY) scripts/run_analysis.py
+
+simulate:
+	PYTHONPATH=src $(PY) scripts/run_simulations.py
+
+readme:
+	PYTHONPATH=src $(PY) scripts/build_readme.py
 
 site:
 	PYTHONPATH=src $(PY) scripts/build_site.py

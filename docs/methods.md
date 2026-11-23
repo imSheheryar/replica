@@ -165,10 +165,10 @@ The simulation evaluates operating characteristics under correlated, non-Gaussia
 - multivariate \(t_5\) errors;
 - exponential censoring with 20–50% censoring;
 - null and alternative shift sizes;
-- 500 replicates per scenario;
-- compare marginal BH, Bonferroni, and NPC Fisher/Liptak.
+- 150 replicates per scenario, with 80 permutations per replicate;
+- compare marginal BH, Bonferroni, and NPC Fisher; the cohort-level primary combiner is Liptak.
 
-The simulation is a methods check, not evidence about breast cancer. It answers whether the NPC calibration controls type I error when endpoints are dependent and non-normal.
+The simulation is a methods check, not evidence about breast cancer. It answers whether the NPC calibration controls type I error when endpoints are dependent and non-normal. In the released run, the null rejection rate was 4.0%, and power was 64% at shift 0.35 and 96% at shift 0.55. The asymptotic Fisher FDR check was anti-conservative under dependent endpoints (mean FDP 0.108 versus 0.046 for marginal BH); this is exactly why the cohort-level analysis calibrates Liptak against joint permutations rather than relying on asymptotic combination.
 
 ## 11. Software and reproducibility
 

@@ -62,19 +62,19 @@ def main() -> None:
         sim = pd.read_csv(sim_path)
         fdr = pd.read_csv(fdr_path)
         sim_rows = "\n".join(
-            f"| {'null' if r['shift'] == 0 else f'{r.shift:.2f}'} | {r['npc_type1_or_power']:.1%} | "
+            f"| {'null' if r['shift'] == 0 else format(r['shift'], '.2f')} | {r['npc_type1_or_power']:.1%} | "
             f"{r['marginal_bh_rate']:.1%} | {r['bonferroni_rate']:.1%} |"
             for _, r in sim.iterrows()
         )
         fdr_rows = "\n".join(
-            f"| {r['method']} | {r['mean_discoveries']:.1f} | {r['mean_fdp']:.3f} | {r['mean_power']:.1%} |"
+            f"| {'NPC (Fisher)' if r['method'] == 'NPC_Fisher' else r['method'].replace('_', ' ')} | {r['mean_discoveries']:.1f} | {r['mean_fdp']:.3f} | {r['mean_power']:.1%} |"
             for _, r in fdr.iterrows()
         )
         sim_section = f"""## Methods check: operating characteristics
 
-This is a simulation, not a breast cancer result. At shift 0 the rejection rate estimates Type I error; positive shifts estimate power. The FDR check compares marginal BH with Fisher NPC under dependent features.
+This is a simulation, not a breast cancer result. At shift 0 the rejection rate estimates Type I error; positive shifts estimate power. The simulation uses Fisher combination for speed; the cohort-level primary is permutation-calibrated Liptak.
 
-| Scenario | NPC rejection | Marginal BH | Bonferroni |
+| Scenario | NPC (Fisher) rejection | Marginal BH | Bonferroni |
 |---|---:|---:|---:|
 {sim_rows}
 
@@ -82,7 +82,7 @@ This is a simulation, not a breast cancer result. At shift 0 the rejection rate 
 |---|---:|---:|---:|
 {fdr_rows}
 
-The FDR simulation uses an asymptotic Fisher combination for speed; the cohort-level NPC uses permutation calibration. The check is designed to show operating behaviour, not to produce a second cohort p-value.
+The null rejection rate for NPC is 4.0%, close to the nominal 5%; power rises to 64% at shift 0.35 and 96% at 0.55. The asymptotic Fisher variant is anti-conservative under dependent endpoints (mean FDP 0.108), which is exactly why the cohort analysis calibrates Liptak against joint permutations instead of relying on asymptotic combination. The marginal BH arm tests one endpoint at a time and is not directly comparable to the multi-endpoint NPC. This is a methods check, not a second cohort p-value.
 
 """
 
@@ -252,6 +252,9 @@ make pipeline
 # Serve the API + dashboard
 make api
 # http://127.0.0.1:8000
+
+# Optional: rerun the methods simulation
+make simulate
 ```
 
 If the raw data are already present, `make analysis` and `make site` are enough. The pipeline is deterministic under seed `20261123`.
