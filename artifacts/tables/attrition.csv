@@ -1,0 +1,11 @@
+step,n,cohort
+raw patients,1084,tcga
+primary four-class subtype,945,tcga
++ valid OS,933,tcga
++ complete clinical covariates,868,tcga
+secondary endpoint available,813,tcga
+raw patients,2509,metabric
+primary four-class subtype,1608,metabric
++ valid OS,1608,metabric
++ complete clinical covariates,1173,metabric
+secondary endpoint available,1605,metabric

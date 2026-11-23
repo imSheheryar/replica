@@ -1,0 +1,5 @@
+cohort,endpoint,n,events,logrank_stat,p_value,asymptotic_p,cindex,note
+tcga,OS,933,125,10.565364068959443,0.015492253873063468,0.014323987860979062,0.592324902937112,subtype + endpoint available; no clinical complete-case filter
+tcga,DFS,813,71,2.4573721661932035,0.49525237381309345,0.48304416752000445,0.578978978978979,subtype + endpoint available; no clinical complete-case filter
+metabric,OS,1608,965,43.75177981936887,0.0004997501249375312,1.7039862324338857e-09,0.5759953991408823,subtype + endpoint available; no clinical complete-case filter
+metabric,RFS,1605,665,53.23161499341254,0.0004997501249375312,1.6363144280496782e-11,0.5909706898775859,subtype + endpoint available; no clinical complete-case filter

@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, cite the repository and the source cohorts."
+title: "Replica: A replication audit of breast cancer subtype systems"
+abstract: "A pre-specified audit of PAM50/Claudin-low and IntClust across TCGA-BRCA and METABRIC, with censoring-aware permutation tests, nonparametric combination, FDR control, external validation, and expression modules."
+authors:
+  - family-names: "Yousaf"
+    given-names: "Sheheryar"
+    alias: "imSheheryar"
+repository-code: "https://github.com/imSheheryar/replica"
+license: MIT
+version: "1.0.0"
+date-released: "2026-11-23"
+keywords:
+  - breast cancer
+  - PAM50
+  - METABRIC
+  - TCGA
+  - replication
+  - survival analysis
+  - nonparametric combination
+  - permutation test
+  - reproducible research

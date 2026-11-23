@@ -1,0 +1,80 @@
+version: "1.0.0"
+seed: 20261123
+project: Replica
+
+cohorts:
+  discovery:
+    key: tcga
+    study: brca_tcga_pan_can_atlas_2018
+    label: TCGA-BRCA PanCancer Atlas
+    subtype_column: SUBTYPE
+    age_column: AGE
+    stage_column: AJCC_PATHOLOGIC_TUMOR_STAGE
+    er_column: ER_STATUS_BY_IHC
+    pr_column: PR_STATUS_BY_IHC
+    os_time: OS_MONTHS
+    os_event: OS_STATUS
+    dfs_time: DFS_MONTHS
+    dfs_event: DFS_STATUS
+  validation:
+    key: metabric
+    study: brca_metabric
+    label: METABRIC
+    subtype_column: CLAUDIN_SUBTYPE
+    age_column: AGE_AT_DIAGNOSIS
+    stage_column: TUMOR_STAGE
+    er_column: ER_STATUS
+    pr_column: PR_STATUS
+    her2_column: HER2_STATUS
+    os_time: OS_MONTHS
+    os_event: OS_STATUS
+    rfs_time: RFS_MONTHS
+    rfs_event: RFS_STATUS
+
+subtypes:
+  primary: [LumA, LumB, Basal, Her2]
+  reference: LumA
+  extra: [Normal, claudin-low]
+  mapping:
+    BRCA_LumA: LumA
+    BRCA_LumB: LumB
+    BRCA_Basal: Basal
+    BRCA_Her2: Her2
+    BRCA_Normal: Normal
+    LumA: LumA
+    LumB: LumB
+    Basal: Basal
+    Her2: Her2
+    Normal: Normal
+    claudin-low: claudin-low
+    NC: NC
+
+covariates:
+  primary: [age10, stage_high, er_pos, pr_pos]
+  metabric_sensitivity: [age10, stage_high, er_pos, pr_pos, grade3, her2_pos]
+
+permutation:
+  n_primary: 2000
+  n_secondary: 2000
+  n_simulation: 80
+  batch_size: 500
+
+multiplicity:
+  primary_q: 0.05
+  module_q: 0.10
+
+nmf:
+  ranks: [3, 4, 5, 6, 7, 8]
+  top_variable_genes: 500
+  top_module_genes: 30
+  max_iter: 600
+
+bootstrap:
+  n: 1000
+  confidence: 0.95
+
+endpoints:
+  primary: os
+  secondary:
+    tcga: dfs
+    metabric: rfs

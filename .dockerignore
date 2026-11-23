@@ -1,0 +1,10 @@
+.git
+.venv
+data/raw
+data/interim
+data/processed
+artifacts/models
+__pycache__
+.pytest_cache
+.ruff_cache
+*.log

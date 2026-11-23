@@ -1,0 +1,11 @@
+subtype4,n,events_os,cohort
+Basal,171,22.0,tcga
+Her2,78,15.0,tcga
+LumA,499,57.0,tcga
+LumB,197,31.0,tcga
+,139,26.0,tcga
+Basal,209,115.0,metabric
+Her2,224,157.0,metabric
+LumA,700,378.0,metabric
+LumB,475,315.0,metabric
+,901,179.0,metabric
